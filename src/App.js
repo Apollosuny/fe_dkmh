@@ -30,7 +30,7 @@ function App() {
       subjects: subjects,
       cookies: Cookies.get('ASC.AUTH')
     };
-    // console.log(subjects);
+    console.log(body);
 
     fetch('https://be-dkmh.onrender.com/register', {
       // fetch('http://localhost:5000/register', {
