@@ -21,14 +21,14 @@ function App() {
     //   .catch(err => console.log(err));
   }, [])
 
-  console.log(Cookies.get('a'));
+  console.log(Cookies.get('ASC.AUTH'));
 
   const handleSubmit = (e) => {
 
     const body = {
       guid: guid,
       subjects: subjects,
-      cookies: Cookies.get('a')
+      cookies: Cookies.get('ASC.AUTH')
     };
     // console.log(subjects);
 
