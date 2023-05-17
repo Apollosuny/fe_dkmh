@@ -38,7 +38,8 @@ function App() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     })
-      .then(() => {
+      .then((res) => {
+        res.redirected('https://sv.isvnu.vn/dashboard.html');
         console.log('Remove');
         Cookies.remove('ASC.AUTH');
       })
