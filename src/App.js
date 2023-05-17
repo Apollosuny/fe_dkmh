@@ -38,6 +38,9 @@ function App() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     })
+      .then(() => {
+        Cookies.remove('ASC.AUTH');
+      })
     // console.log(JSON.stringify(subjects));
 
     // body {
