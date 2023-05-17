@@ -39,8 +39,10 @@ function App() {
       body: JSON.stringify(body)
     })
       .then(() => {
+        console.log('Remove');
         Cookies.remove('ASC.AUTH');
       })
+      .catch((err) => console.log('Cannot Remove'));
     // console.log(JSON.stringify(subjects));
 
     // body {
