@@ -13,7 +13,7 @@ function App() {
     // fetch('https://jsonplaceholder.typicode.com/posts')
     // fetch('https://apollo-r35f.onrender.com/')
     // fetch('http://localhost:5000/get')
-    //   .then(res => res.json())
+    //   .then(res => console.log(res))
     //   .then(data => {
     //     console.log(data);
     //     // setCookies(data.cookie.result);
@@ -30,14 +30,15 @@ function App() {
       subjects: subjects,
       cookies: Cookies.get('a')
     };
-    console.log(subjects);
+    // console.log(subjects);
 
     fetch('https://be-dkmh.onrender.com/register', {
+      // fetch('http://localhost:5000/register', {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     })
-    console.log(JSON.stringify(subjects));
+    // console.log(JSON.stringify(subjects));
 
     // body {
     //  tên
