@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     // fetch('https://jsonplaceholder.typicode.com/posts')
     // fetch('https://apollo-r35f.onrender.com/')
-    // fetch('http://localhost:5000/get')
+    // fetch('https://ed37-116-96-74-62.ngrok-free.app/getClasses?fbclid=IwAR2rO6GXt2X22z0-nfMx70EWHg33N-ImlFjN6WYlMg8CUrzmtFuKeGUrfMw')
     //   .then(res => console.log(res))
     //   .then(data => {
     //     console.log(data);
@@ -26,24 +26,27 @@ function App() {
   const handleSubmit = (e) => {
 
     const body = {
-      guid: guid,
-      subjects: subjects,
-      cookies: Cookies.get('ASC.AUTH')
+      cookie: Cookies.get('ASC.AUTH'),
+      classes_registered: subjects,
+      guids_registered: guid,
     };
     console.log(body);
 
-    fetch('https://be-dkmh.onrender.com/register', {
-      // fetch('http://localhost:5000/register', {
+    // fetch('https://be-dkmh.onrender.com/register', {
+      fetch('https://ed37-116-96-74-62.ngrok-free.app/register', {
       method: "POST",
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        // "ngrok-skip-browser-warning": "69420"
+      },
       body: JSON.stringify(body)
     })
-      .then((res) => {
-        res.redirected('https://sv.isvnu.vn/dashboard.html');
-        console.log('Remove');
-        Cookies.remove('ASC.AUTH');
-      })
-      .catch((err) => console.log('Cannot Remove'));
+      // .then((res) => {
+      //   // res.redirected('https://sv.isvnu.vn/dashboard.html');
+      //   console.log('Remove');
+      //   Cookies.remove('ASC.AUTH', { path: '/' });
+      // })
+      // .catch((err) => console.log('Cannot Remove'));
     // console.log(JSON.stringify(subjects));
 
     // body {
