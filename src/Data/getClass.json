@@ -1,0 +1,52 @@
+[
+    {
+        "class_code": "INS1065",
+        "course_code": "INS106501",
+        "guid": "UYDd-Wgx3-F2-IvUMT49XA",
+        "semester_id": "35",
+        "room": "Phòng 507, Số 1 Trịnh Văn Bô",
+        "time_slot": "LT - Thứ 2 (Tiết 10 - 12)",
+        "lecturer": "Ths Đõ Thúy Hằng",
+        "from_to": "06/02/2023 - 22/05/2023"
+    },
+    {
+        "class_code": "INS1065",
+        "course_code": "INS106502",
+        "guid": "UYDd-Wgx3-F2-IvUMT50XA",
+        "semester_id": "35",
+        "room": "Phòng 507, Số 1 Trịnh Văn Bô",
+        "time_slot": "LT - Thứ 2 (Tiết 10 - 12)",
+        "lecturer": "Ths Đõ Thúy Hằng",
+        "from_to": "06/02/2023 - 22/05/2023"
+    },
+    {
+        "class_code": "INS1065",
+        "course_code": "INS106503",
+        "guid": "UYDd-Wgx3-F2-IvUMT51XA",
+        "semester_id": "35",
+        "room": "Phòng 507, Số 1 Trịnh Văn Bô",
+        "time_slot": "LT - Thứ 2 (Tiết 10 - 12)",
+        "lecturer": "Ths Đõ Thúy Hằng",
+        "from_to": "06/02/2023 - 22/05/2023"
+    },
+    {
+        "class_code": "INS1065",
+        "course_code": "INS106504",
+        "guid": "UYDd-Wgx3-F2-IvUMT52XA",
+        "semester_id": "35",
+        "room": "Phòng 507, Số 1 Trịnh Văn Bô",
+        "time_slot": "LT - Thứ 2 (Tiết 10 - 12)",
+        "lecturer": "Ths Đõ Thúy Hằng",
+        "from_to": "06/02/2023 - 22/05/2023"
+    },
+    {
+        "class_code": "INS1065",
+        "course_code": "INS106505",
+        "guid": "UYDd-Wgx3-F2-IvUMT53XA",
+        "semester_id": "35",
+        "room": "Phòng 507, Số 1 Trịnh Văn Bô",
+        "time_slot": "LT - Thứ 2 (Tiết 10 - 12)",
+        "lecturer": "Ths Đõ Thúy Hằng",
+        "from_to": "06/02/2023 - 22/05/2023"
+    }
+]
