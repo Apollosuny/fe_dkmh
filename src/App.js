@@ -109,10 +109,6 @@ function App() {
                   <th scope='col'>time_slot</th>
                   <th scope='col'>lecturer</th>
                   <th scope='col'>from_to</th>
-                  <th scope='row'>
-                    <input className='form-check-input' type='checkbox' id='checkbox-all' />
-                    <label className='form-check-label' for='checkbox-all'></label>
-                  </th>
                 </tr>
               </thead>
             </table>
