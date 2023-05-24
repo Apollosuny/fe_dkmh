@@ -62,7 +62,7 @@ function Home() {
     const displayData = filteredData.slice((currentPage - 1) * checkboxesPerPage, (currentPage - 1) * checkboxesPerPage + checkboxesPerPage);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         const body = {
             cookie: Cookies.get("ASC.AUTH"),
             classes_registered: subjects,
