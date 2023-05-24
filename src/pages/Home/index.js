@@ -70,8 +70,8 @@ function Home() {
         };
         // console.log(body);
         try {
-            const response = await axios.post('http://localhost:5000/register', body);
-            // const response = await axios.post('https://be-dkmh.onrender.com/register', body);
+            // const response = await axios.post('http://localhost:5000/register', body);
+            const response = await axios.post('https://be-dkmh.onrender.com/register', body);
             console.log(response);
             console.log(response.data);
             if (response.data.status === 200) {
