@@ -58,11 +58,11 @@ function Home() {
 
     const pageCount = Math.ceil(filteredData.length / checkboxesPerPage);
     const numbers = [...Array(pageCount + 1).keys()].slice(1);
-    console.log(numbers);
+    // console.log(numbers);
     const displayData = filteredData.slice((currentPage - 1) * checkboxesPerPage, (currentPage - 1) * checkboxesPerPage + checkboxesPerPage);
 
     const handleSubmit = async (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         const body = {
             cookie: Cookies.get("ASC.AUTH"),
             classes_registered: subjects,
@@ -70,10 +70,10 @@ function Home() {
         };
         // console.log(body);
         try {
-            // const response = await axios.post('http://localhost:5000/register', body);
-            const response = await axios.post('https://be-dkmh.onrender.com/register', body);
-            // console.log(response);
-            // console.log(response.data);
+            const response = await axios.post('http://localhost:5000/register', body);
+            // const response = await axios.post('https://be-dkmh.onrender.com/register', body);
+            console.log(response);
+            console.log(response.data);
             if (response.data.status === 200) {
                 swal(
                     {
