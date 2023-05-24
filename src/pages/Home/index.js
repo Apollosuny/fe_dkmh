@@ -2,11 +2,6 @@ import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
 import { useEffect, useState } from "react";
 import Data from "../../Data/getClass.json";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faChevronLeft,
-    faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'js-cookie';
 import axios from "axios";
 import swal from "sweetalert";
@@ -75,9 +70,10 @@ function Home() {
         };
         // console.log(body);
         try {
-            const response = await axios.post('http://localhost:5000/register', body);
-            console.log(response);
-            console.log(response.data);
+            // const response = await axios.post('http://localhost:5000/register', body);
+            const response = await axios.post('https://be-dkmh.onrender.com/register', body);
+            // console.log(response);
+            // console.log(response.data);
             if (response.data.status === 200) {
                 swal(
                     {
