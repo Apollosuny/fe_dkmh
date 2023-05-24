@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Data from "../../Data/getClass.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,95 +8,139 @@ import {
     faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'js-cookie';
+import axios from "axios";
+import swal from "sweetalert";
+import { Pagination } from "@mui/material";
 
 const cx = classNames.bind(styles);
 
 function Home() {
+    const [checkboxes, setCheckboxes] = useState(Data.map((item) => {
+        return {
+            id: item.class_code,
+            subject_name: item.subject_name,
+            course_code: item.course_code,
+            class_code: item.class_code,
+            guid: item.guid,
+            room: item.room,
+            time_slot: item.time_slot,
+            lecturer: item.lecturer,
+            from_to: item.from_to,
+            isChecked: false
+        };
+    }));
+    const [checkboxState, setCheckboxState] = useState({});
     const [subjects, setSubjects] = useState([]);
     const [guid, setGuid] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 7;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = Data.slice(firstIndex, lastIndex);
-    const npage = Math.ceil(Data.length / recordsPerPage);
-    const numbers = [...Array(npage + 1).keys()].slice(1);
-    let count = (currentPage - 1) * recordsPerPage + 1;
+    const [checkboxesPerPage, setCheckboxesPerPage] = useState(7);
+    const lastIndex = currentPage * checkboxesPerPage;
+    const firstIndex = lastIndex - checkboxesPerPage;
+    const npage = Math.ceil(checkboxes.length / checkboxesPerPage);
+    const [search, setSearch] = useState('');
+    let count = (currentPage - 1) * checkboxesPerPage + 1;
 
-    const handleSubmit = (e) => {
+
+    const handleSearch = (event) => {
+        setSearch(event.target.value);
+        setCurrentPage(1);
+    }
+
+    const filteredData = checkboxes.filter((item) => 
+        item.subject_name.toLowerCase().includes(search.toLowerCase()) ||
+        item.course_code.toLowerCase().includes(search.toLowerCase()) ||
+        item.lecturer.toLowerCase().includes(search.toLowerCase()) 
+    );
+
+    useEffect(() => {
+        const newState = {};
+        checkboxes.forEach(checkbox => {
+            newState[checkbox.id] = checkbox.isChecked;
+        });
+        setCheckboxState(newState);
+    }, [checkboxes]);
+
+
+    const pageCount = Math.ceil(filteredData.length / checkboxesPerPage);
+    const numbers = [...Array(pageCount + 1).keys()].slice(1);
+    console.log(numbers);
+    const displayData = filteredData.slice((currentPage - 1) * checkboxesPerPage, (currentPage - 1) * checkboxesPerPage + checkboxesPerPage);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         const body = {
             cookie: Cookies.get("ASC.AUTH"),
             classes_registered: subjects,
             guids_registered: guid,
         };
-        console.log(body);
-
-        // fetch('https://be-dkmh.onrender.com/register', {
-        fetch("https://ed37-116-96-74-62.ngrok-free.app/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // "ngrok-skip-browser-warning": "69420"
-            },
-            body: JSON.stringify(body),
-        });
-        // .then((res) => {
-        //   // res.redirected('https://sv.isvnu.vn/dashboard.html');
-        //   console.log('Remove');
-        //   Cookies.remove('ASC.AUTH', { path: '/' });
-        // })
-        // .catch((err) => console.log('Cannot Remove'));
-        // console.log(JSON.stringify(subjects));
-
-        // body {
-        //  tên
-        //  list môn học: [string]
-        //  cookies
-        // }
+        // console.log(body);
+        try {
+            const response = await axios.post('http://localhost:5000/register', body);
+            console.log(response);
+            console.log(response.data);
+            if (response.data.status === 200) {
+                swal(
+                    {
+                        title: "Thành Công",
+                        text: response.data.message,
+                        icon: "success",
+                        button: {
+                            text: "OK",
+                            className: cx('btn-success'),
+                        }
+                    }
+                )
+                setCheckboxes(prevCheckboxes => prevCheckboxes.map(checkbox => {
+                    return {...checkbox, isChecked: false}
+                }));
+                setSubjects([]);
+                setGuid([]);
+            } else if (response.data.status === 400) {
+                swal(
+                    {
+                        title: "Thất bại",
+                        text: response.data.message,
+                        icon: "error",
+                        button: {
+                            text: "OK",
+                            className: cx('btn-success'),
+                        }
+                    }
+                )
+                setCheckboxes(prevCheckboxes => prevCheckboxes.map(checkbox => {
+                    return {...checkbox, isChecked: false}
+                }));
+                setSubjects([]);
+                setGuid([]);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    const handleChange = (e) => {
+    // Separate the classes and guids, save the checkbox
+    const handleChange = (e, id) => {
         const value = e.target.value;
         const checked = e.target.checked;
         console.log(value, checked);
-        // console.log(value.split(/-(.*)/s));
         let [subjects_value, guid_value] = value.split(/-(.*)/s);
-        // console.log(subjects_value, guid_value);
+        setCheckboxes(prevCheckboxes => prevCheckboxes.map(checkbox => checkbox.id === id ? {...checkbox, isChecked: !checkbox.isChecked} : checkbox));
+        
         if (checked) {
             setGuid([...guid, guid_value]);
             setSubjects([...subjects, subjects_value]);
         } else {
-            setSubjects(subjects.filter((e) => e !== value));
+            setGuid(pre => {
+                return [...pre.filter(preGuid => preGuid !== guid_value)];
+            });
+
+            setSubjects(pre => {
+                return [...pre.filter(preSubject => preSubject !== subjects_value)];
+            });
         }
     };
 
-    const renderClass = () => {
-        return records.map((item) => {
-            return (
-                <tr key={item.course_code}>
-                    <td>{count++}</td>
-                    <td className={cx('subjects')}>
-                        <span className={cx('checkbox')}>
-                            <input
-                                type="checkbox"
-                                name={item.guid}
-                                value={`${item.course_code}-${item.guid}`}
-                                onChange={handleChange}
-                                className={cx("classes-checkbox")}
-                            />
-                        </span>
-                        <span className={cx('subject_name')}>{item.subject_name}</span>
-                    </td>
-                    <td>{item.course_code}</td>
-                    <td>{item.room}</td>
-                    <td>{item.time_slot}</td>
-                    <td>{item.lecturer}</td>
-                    <td>{item.from_to}</td>
-                </tr>
-            );
-        });
-    };
-
+    // Handle Pagination
     const nextPage = () => {
         if (currentPage !== npage) {
             setCurrentPage(currentPage + 1);
@@ -113,6 +157,39 @@ function Home() {
         setCurrentPage(n);
     };
 
+    // render data 
+    const renderClass = () => {
+        return displayData.map((item, index) => {
+            return (
+                <tr key={index}>
+                    <td>{count++}</td>
+                    <td className={cx('subjects')}>
+                        <div className={cx('subject_wrapper')}>
+                            <div className={cx('subject_inner')}>
+                                <span className={cx('checkbox')}>
+                                    <input
+                                        type="checkbox"
+                                        name={item.guid}
+                                        value={`${item.course_code}-${item.guid}`}
+                                        onChange={(e) => handleChange(e, item.id)}
+                                        className={cx("classes-checkbox")}
+                                        checked={checkboxState[item.id] || false}
+                                    />
+                                </span>
+                                <span className={cx('subject_name')}>{item.subject_name}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{item.course_code}</td>
+                    <td>{item.room}</td>
+                    <td>{item.time_slot}</td>
+                    <td>{item.lecturer}</td>
+                    <td>{item.from_to}</td>
+                </tr>
+            );
+        });
+    };
+
     return (
         <>
             <div className={cx("wrapper")}>
@@ -122,10 +199,11 @@ function Home() {
                         <div className={cx("table-options")}>
                             <div className={cx("option")}>
                                 <div className={cx("number_classes")}>
+                                    <span className={cx('class_per_page')}>{checkboxesPerPage}</span>
                                     <div
                                         className={cx("select_number_classes")}
                                     >
-                                        <input type="text" />
+                                        <input type="text"  />
                                         <span className={cx("icon-down")}>
                                             <svg
                                                 height="20"
@@ -148,6 +226,7 @@ function Home() {
                                 <div className={cx("search-box")}>
                                     <input
                                         type="text"
+                                        onChange={handleSearch}
                                         placeholder="Search ..."
                                     />
                                 </div>
@@ -158,7 +237,7 @@ function Home() {
                                 <thead className={cx("table-content-header")}>
                                     <tr role="row">
                                         <th scope="col">#</th>
-                                        <th scope="col">Môn học</th>
+                                        <th scope="col" className={cx('subject-header')}>Môn học</th>
                                         <th scope="col">Mã lớp học</th>
                                         <th scope="col">Phòng học</th>
                                         <th scope="col">Lịch học</th>
@@ -170,45 +249,20 @@ function Home() {
                                     {renderClass()}
                                 </tbody>
                             </table>
-                            <div className={cx('btn-submit')}>
-                                <button type="submit">Submit</button>
-                            </div>
+                            {filteredData.length > 0 ? 
+                                <div className={cx('btn-submit')}>
+                                    <button type="submit">Submit</button>
+                                </div> :
+                                <h4 className={cx('classes_not_found')}>Không có lớp học nào</h4>
+                            }
                         </form>
                         <div className={cx("table-footer")}>
                             <div className={cx("showing-item")}>
-                                <span>Showing {firstIndex + 1} to {firstIndex + records.length} of {Data.length} classes</span>
+                                <span>Showing {filteredData.length > 0 ? firstIndex + 1 : 0} to {firstIndex + displayData.length} of {filteredData.length} classes</span>
                             </div>
-                            <div className={cx("pagination")}>
+                            <div>
                                 <div className={cx("pagination")}>
-                                    {currentPage > 1 && 
-                                        <button
-                                            className={cx("page-item")}
-                                            onClick={prePage}
-                                        >
-                                            <FontAwesomeIcon icon={faChevronLeft} />
-                                        </button>
-                                    }
-                                    {numbers.map((number, index) => (
-                                        <button
-                                            className={cx("page-item", {
-                                                active: currentPage === number,
-                                            })}
-                                            key={index}
-                                            onClick={() => changeCPage(number)}
-                                        >
-                                            {number}
-                                        </button>
-                                    ))}
-                                    {currentPage < npage && 
-                                        <button
-                                            className={cx("page-item")}
-                                            onClick={nextPage}
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faChevronRight}
-                                            />
-                                        </button>
-                                    }
+                                    <Pagination count={numbers.length} onChange={(e, value) => changeCPage(value)}  />
                                 </div>
                             </div>
                         </div>

@@ -11,8 +11,8 @@
         "from_to": "06/02/2023 - 22/05/2023"
     },
     {
-        "class_code": "INS1065",
-        "course_code": "INS106502",
+        "class_code": "INS1069",
+        "course_code": "INS106901",
         "guid": "UYDd-Wgx3-F2-IvUMT49XA",
         "subject_name": "Lập trình 2",
         "semester_id": "35",
@@ -22,8 +22,8 @@
         "from_to": "06/02/2023 - 22/05/2023"
     },
     {
-        "class_code": "INS1065",
-        "course_code": "INS106503",
+        "class_code": "INS1061",
+        "course_code": "INS106103",
         "guid": "UYDd-Wgx3-F2-IvUMT49XA",
         "subject_name": "Lập trình Python",
         "semester_id": "35",
@@ -44,10 +44,10 @@
         "from_to": "06/02/2023 - 22/05/2023"
     },
     {
-        "class_code": "MAT1004",
-        "course_code": "MAT100401",
+        "class_code": "MAT1005",
+        "course_code": "MAT100501",
         "guid": "UYDd-Wgx3-F2-IvUMT49XA",
-        "subject_name": "Lí thuyết xác suất và thống kê toán",
+        "subject_name": "Toán cao cấp",
         "semester_id": "35",
         "room": "Phòng 507, Số 1 Trịnh Văn Bô",
         "time_slot": "LT - Thứ 2 (Tiết 10 - 12)",
@@ -143,10 +143,10 @@
         "from_to": "06/02/2023 - 22/05/2023"
     },
     {
-        "class_code": "INS1065",
-        "course_code": "INS106501",
+        "class_code": "INS1060",
+        "course_code": "INS106001",
         "guid": "UYDd-Wgx3-F2-IvUMT49XA",
-        "subject_name": "Lập trình 1",
+        "subject_name": "Lập trình ReactJS",
         "semester_id": "35",
         "room": "Phòng 507, Số 1 Trịnh Văn Bô",
         "time_slot": "LT - Thứ 2 (Tiết 10 - 12)",
