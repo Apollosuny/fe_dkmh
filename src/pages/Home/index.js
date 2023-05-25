@@ -12,7 +12,20 @@ const cx = classNames.bind(styles);
 
 function Home() {
     const [classes, setClasses] = useState([]);
-    const [checkboxes, setCheckboxes] = useState([]);
+    const [checkboxes, setCheckboxes] = useState(Data.map((item) => {
+        return {
+            id: item.class_code,
+            subject_name: item.subject_name,
+            course_code: item.course_code,
+            class_code: item.class_code,
+            guid: item.guid,
+            room: item.room,
+            time_slot: item.time_slot,
+            lecturer: item.lecturer,
+            from_to: item.from_to,
+            isChecked: false
+        };
+    }));
     const [checkboxState, setCheckboxState] = useState({});
     const [subjects, setSubjects] = useState([]);
     const [guid, setGuid] = useState([]);
@@ -29,27 +42,27 @@ function Home() {
         setCurrentPage(1);
     }
 
-    useEffect(() => {
-        fetchData()
-            .then(data => setClasses(data));
-    }, []);
+    // useEffect(() => {
+    //     fetchData()
+    //         .then(data => setClasses(data));
+    // }, []);
 
-    useEffect(() => {
-        setCheckboxes(classes.map((item) => {
-            return {
-                id: item.class_code,
-                subject_name: item.subject_name,
-                course_code: item.course_code,
-                class_code: item.class_code,
-                guid: item.guid,
-                room: item.room,
-                time_slot: item.time_slot,
-                lecturer: item.lecturer,
-                from_to: item.from_to,
-                isChecked: false
-            };
-        }));
-    }, [classes]);
+    // useEffect(() => {
+    //     setCheckboxes(classes.map((item) => {
+    //         return {
+    //             id: item.class_code,
+    //             subject_name: item.subject_name,
+    //             course_code: item.course_code,
+    //             class_code: item.class_code,
+    //             guid: item.guid,
+    //             room: item.room,
+    //             time_slot: item.time_slot,
+    //             lecturer: item.lecturer,
+    //             from_to: item.from_to,
+    //             isChecked: false
+    //         };
+    //     }));
+    // }, [classes]);
 
     const filteredData = checkboxes.filter((item) => 
         item.subject_name.toLowerCase().includes(search.toLowerCase()) ||
