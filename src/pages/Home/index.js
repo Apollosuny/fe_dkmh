@@ -95,7 +95,7 @@ function Home() {
         try {
             // const response = await axios.post('http://localhost:5000/register', body);
             // const response = await axios.post('https://be-dkmh.onrender.com/register', body);
-            const response = await axios.post('https://0656-116-96-46-192.ngrok-free.app/register', body);
+            const response = await axios.post('https://1bb6-116-96-46-192.ngrok-free.app/register', body);
             console.log(response.status);
             console.log(response.data);
             if (response.data.status === 200) {
