@@ -6,24 +6,13 @@ import Cookies from 'js-cookie';
 import axios from "axios";
 import swal from "sweetalert";
 import { Pagination } from "@mui/material";
+import { fetchData } from "./Data/api";
 
 const cx = classNames.bind(styles);
 
 function Home() {
-    const [checkboxes, setCheckboxes] = useState(Data.map((item) => {
-        return {
-            id: item.class_code,
-            subject_name: item.subject_name,
-            course_code: item.course_code,
-            class_code: item.class_code,
-            guid: item.guid,
-            room: item.room,
-            time_slot: item.time_slot,
-            lecturer: item.lecturer,
-            from_to: item.from_to,
-            isChecked: false
-        };
-    }));
+    const [classes, setClasses] = useState([]);
+    const [checkboxes, setCheckboxes] = useState([]);
     const [checkboxState, setCheckboxState] = useState({});
     const [subjects, setSubjects] = useState([]);
     const [guid, setGuid] = useState([]);
@@ -35,11 +24,32 @@ function Home() {
     const [search, setSearch] = useState('');
     let count = (currentPage - 1) * checkboxesPerPage + 1;
 
-
     const handleSearch = (event) => {
         setSearch(event.target.value);
         setCurrentPage(1);
     }
+
+    useEffect(() => {
+        fetchData()
+            .then(data => setClasses(data));
+    }, []);
+
+    useEffect(() => {
+        setCheckboxes(classes.map((item) => {
+            return {
+                id: item.class_code,
+                subject_name: item.subject_name,
+                course_code: item.course_code,
+                class_code: item.class_code,
+                guid: item.guid,
+                room: item.room,
+                time_slot: item.time_slot,
+                lecturer: item.lecturer,
+                from_to: item.from_to,
+                isChecked: false
+            };
+        }));
+    }, [classes]);
 
     const filteredData = checkboxes.filter((item) => 
         item.subject_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -47,6 +57,10 @@ function Home() {
         item.lecturer.toLowerCase().includes(search.toLowerCase()) 
     );
 
+    const pageCount = Math.ceil(filteredData.length / checkboxesPerPage);
+    const numbers = [...Array(pageCount + 1).keys()].slice(1);
+    const displayData = filteredData.slice((currentPage - 1) * checkboxesPerPage, (currentPage - 1) * checkboxesPerPage + checkboxesPerPage);
+    
     useEffect(() => {
         const newState = {};
         checkboxes.forEach(checkbox => {
@@ -55,11 +69,6 @@ function Home() {
         setCheckboxState(newState);
     }, [checkboxes]);
 
-
-    const pageCount = Math.ceil(filteredData.length / checkboxesPerPage);
-    const numbers = [...Array(pageCount + 1).keys()].slice(1);
-    // console.log(numbers);
-    const displayData = filteredData.slice((currentPage - 1) * checkboxesPerPage, (currentPage - 1) * checkboxesPerPage + checkboxesPerPage);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -72,7 +81,7 @@ function Home() {
         try {
             // const response = await axios.post('http://localhost:5000/register', body);
             const response = await axios.post('https://be-dkmh.onrender.com/register', body);
-            console.log(response);
+            console.log(response.status);
             console.log(response.data);
             if (response.data.status === 200) {
                 swal(
@@ -136,19 +145,6 @@ function Home() {
         }
     };
 
-    // Handle Pagination
-    const nextPage = () => {
-        if (currentPage !== npage) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const prePage = () => {
-        if (currentPage !== 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
     const changeCPage = (n) => {
         setCurrentPage(n);
     };
@@ -199,7 +195,7 @@ function Home() {
                                     <div
                                         className={cx("select_number_classes")}
                                     >
-                                        <input type="text"  />
+                                        <input type="text" disabled={true} style={{ backgroundColor: "transparent" }} />
                                         <span className={cx("icon-down")}>
                                             <svg
                                                 height="20"
